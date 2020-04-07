@@ -1,3 +1,5 @@
+package com.rubbishman.rubbishcombat;
+
 public class CombatEntity {
     public final int currentHealth;
     public final int maxHealth;

@@ -1,3 +1,5 @@
+package com.rubbishman.rubbishcombat;
+
 public class DefensiveAttribute {
     public final int currentDefense;
     public final int maxDefense;
