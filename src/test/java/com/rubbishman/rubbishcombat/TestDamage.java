@@ -8,6 +8,7 @@ import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerCreator;
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerOptions;
 import com.rubbishman.rubbishRedux.internal.dynamicObjectStore.GsonInstance;
+import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.reducer.CombatReducer;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
@@ -76,12 +77,12 @@ public class TestDamage {
                 100,
                 100,
                 new DefensiveAttribute(
-                        300,
-                        300,
-                        0.75f,
+                        200,
+                        200,
+                        40,
                         5,
                         100
-                )
-        );
+                ),
+                dodoge);
     }
 }

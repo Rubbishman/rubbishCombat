@@ -21,8 +21,7 @@ public class CombatReducer extends IRubbishReducer {
     public CombatEntity calculateDamage(CombatEntity combatEntity, Damage damage) {
         float percentDef = (float)combatEntity.defense.currentDefense / (float)combatEntity.defense.maxDefense;
 
-        int defenseTaken = (int)(percentDef * combatEntity.defense.defenseRatio * damage.damage);
-
+        int defenseTaken = Math.min(damage.damage, (int)(percentDef * combatEntity.defense.defenseFactor));
         int damageTaken = Math.max(damage.damage - defenseTaken, 0);
 
         return CombatEntityHelper.takeDamage(combatEntity, damageTaken, defenseTaken);

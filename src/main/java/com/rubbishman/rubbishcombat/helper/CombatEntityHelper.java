@@ -11,10 +11,10 @@ public class CombatEntityHelper {
                 new DefensiveAttribute(
                         Math.max(combatEntity.defense.currentDefense - defenseTaken, 0),
                         combatEntity.defense.maxDefense,
-                        combatEntity.defense.defenseRatio,
+                        combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor
-                )
-        );
+                ),
+                combatEntity.dodge);
     }
 }
