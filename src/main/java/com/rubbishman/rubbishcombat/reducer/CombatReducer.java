@@ -2,9 +2,8 @@ package com.rubbishman.rubbishcombat.reducer;
 
 import com.rubbishman.rubbishRedux.external.operational.store.ObjectStore;
 import com.rubbishman.rubbishRedux.external.setup.IRubbishReducer;
-import com.rubbishman.rubbishcombat.CombatEntity;
-import com.rubbishman.rubbishcombat.Damage;
-import com.rubbishman.rubbishcombat.DefensiveAttribute;
+import com.rubbishman.rubbishcombat.state.CombatEntity;
+import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.helper.CombatEntityHelper;
 
 public class CombatReducer extends IRubbishReducer {

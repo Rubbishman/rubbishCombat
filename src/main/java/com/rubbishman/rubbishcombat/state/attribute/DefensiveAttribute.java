@@ -1,4 +1,4 @@
-package com.rubbishman.rubbishcombat;
+package com.rubbishman.rubbishcombat.state.attribute;
 
 public class DefensiveAttribute {
     public final int currentDefense;

@@ -1,6 +1,6 @@
 package com.rubbishman.rubbishcombat.helper;
 
-import com.rubbishman.rubbishcombat.LimitedAttribute;
+import com.rubbishman.rubbishcombat.state.attribute.LimitedAttribute;
 
 public class LimitedAttributeHelper {
     public float percentOfMax(LimitedAttribute attr) {

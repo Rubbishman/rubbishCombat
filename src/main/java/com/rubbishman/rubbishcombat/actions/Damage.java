@@ -1,4 +1,4 @@
-package com.rubbishman.rubbishcombat;
+package com.rubbishman.rubbishcombat.actions;
 
 import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
 

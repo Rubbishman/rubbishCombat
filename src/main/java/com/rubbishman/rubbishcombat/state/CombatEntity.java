@@ -1,4 +1,6 @@
-package com.rubbishman.rubbishcombat;
+package com.rubbishman.rubbishcombat.state;
+
+import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 
 public class CombatEntity {
     public final int currentHealth;

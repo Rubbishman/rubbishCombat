@@ -1,7 +1,7 @@
 package com.rubbishman.rubbishcombat.helper;
 
-import com.rubbishman.rubbishcombat.CombatEntity;
-import com.rubbishman.rubbishcombat.DefensiveAttribute;
+import com.rubbishman.rubbishcombat.state.CombatEntity;
+import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 
 public class CombatEntityHelper {
     public static CombatEntity takeDamage(CombatEntity combatEntity, int damageTaken, int defenseTaken) {
