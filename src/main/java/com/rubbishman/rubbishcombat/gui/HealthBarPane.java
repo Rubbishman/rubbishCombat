@@ -12,17 +12,19 @@ public class HealthBarPane {
     private Canvas canvas;
 
     public static final int WIDTH = 640;
-    public static final int HEIGHT = 640;
+    public static final int HEIGHT = 480;
 
     public static final int HEALTH_X = 50;
     public static final int HEALTH_Y = 20;
 
     public static final int HEALTH_WIDTH = 50;
-    public static final int HEALTH_HEIGHT = 600;
+    public static final int HEALTH_HEIGHT = 440;
 
     public static final int DODGE_DAMAGE_INC = 250;
 
     public static TempData tempData;
+
+    public static TweenHelper tween;
 
     public HealthBarPane(Stage primaryStage) {
         tempData = new TempData(
@@ -32,6 +34,14 @@ public class HealthBarPane {
                 150,
                 40,
                 1500
+        );
+
+        tween = new TweenHelper(
+            0,
+            HEIGHT,
+                0,
+                10,
+                0.1
         );
 
         canvas = new Canvas(WIDTH, HEIGHT);
@@ -56,6 +66,10 @@ public class HealthBarPane {
                 armorBar(g2d);
 
                 finalBorder(g2d);
+
+                tween.run();
+
+                g2d.fillOval(200, tween.curValue - 10, 20, 20);
             }
         }.start();
     }
