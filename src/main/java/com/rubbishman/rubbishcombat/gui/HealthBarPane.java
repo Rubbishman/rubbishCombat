@@ -79,9 +79,9 @@ public class HealthBarPane {
         double dodgeDamageHeight = ((((double)tempData.dodgeDamage) / (double)tempData.maxHealth) * HEALTH_HEIGHT);
 
         g2d.fillRect(
-                HEALTH_X,
+                HEALTH_X + (HEALTH_WIDTH / 4),
                 dodgeDamageStartY,
-                HEALTH_WIDTH,
+                (double)HEALTH_WIDTH / 4 * 3,
                 dodgeDamageHeight
         );
 
@@ -93,7 +93,7 @@ public class HealthBarPane {
 
         double inc_height = ((double)DODGE_DAMAGE_INC / tempData.dodgePeriod) * dodgeDamageHeight;
 
-        double dodgeDamagePeriodLine = HEALTH_Y;
+        double dodgeDamagePeriodLine = dodgeDamageStartY + inc_height;//HEALTH_Y;
 
         int counter = 0;
 
@@ -110,7 +110,7 @@ public class HealthBarPane {
                 g2d.setLineDashes(0);
 
                 g2d.strokeLine(
-                        HEALTH_X,
+                        HEALTH_X + (HEALTH_WIDTH / 4),
                         dodgeDamagePeriodLine,
                         HEALTH_X + HEALTH_WIDTH,
                         dodgeDamagePeriodLine
@@ -124,7 +124,7 @@ public class HealthBarPane {
             }
 
             g2d.strokeLine(
-                    HEALTH_X,
+                    HEALTH_X + (HEALTH_WIDTH / 4),
                     dodgeDamagePeriodLine,
                     HEALTH_X + HEALTH_WIDTH,
                     dodgeDamagePeriodLine
