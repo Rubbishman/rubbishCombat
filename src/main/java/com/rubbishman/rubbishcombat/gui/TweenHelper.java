@@ -1,7 +1,7 @@
 package com.rubbishman.rubbishcombat.gui;
 
 public class TweenHelper {
-    public int curValue, targetValue;
+    public double curValue, targetValue;
     public double curVelocity, maxVelocity, accel;
 
     public TweenHelper(int curValue, int targetValue, double curVelocity, double maxVelocity, double accel) {
@@ -14,21 +14,6 @@ public class TweenHelper {
     }
 
     public void run() {
-        if(curValue < targetValue) {
-            curVelocity = Math.min(curVelocity += accel, maxVelocity);
-        } else {
-            curVelocity = Math.max(curVelocity -= accel, maxVelocity * -1);
-        }
-
-        curValue += curVelocity;
-
-        if(Math.abs(curValue - targetValue) < 1) {
-            curValue = targetValue;
-            curVelocity = 0;
-        }
-    }
-
-    public void run2() {
         if(curValue < targetValue) {
             curVelocity = Math.min(Math.max(curVelocity,0) + accel, maxVelocity);
         } else {

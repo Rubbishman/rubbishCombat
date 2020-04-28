@@ -1,16 +1,19 @@
 package com.rubbishman.rubbishcombat.gui;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class HealthBarPane {
-    private Canvas canvas;
-
     public static final int WIDTH = 640;
     public static final int HEIGHT = 480;
 
@@ -22,14 +25,17 @@ public class HealthBarPane {
 
     public static final int DODGE_DAMAGE_INC = 250;
 
-    public static TempData tempData;
+    private static TempData tempData;
 
-    public static TweenHelper tween;
+    private static TweenHelper tween;
+
+    private BorderPane northSouth;
+    private Canvas canvas;
 
     public HealthBarPane(Stage primaryStage) {
         tempData = new TempData(
                 100,
-                47,
+                new TweenHelper(47, 47, 0, 40, 0.01),
                 200,
                 150,
                 40,
@@ -45,12 +51,93 @@ public class HealthBarPane {
         );
 
         canvas = new Canvas(WIDTH, HEIGHT);
-        BorderPane northSouth = new BorderPane();
-        primaryStage.setScene(new Scene(northSouth, WIDTH, HEIGHT));
+        northSouth = new BorderPane();
+        primaryStage.setScene(new Scene(northSouth, WIDTH + 100, HEIGHT + 100));
 
         northSouth.setCenter(canvas);
 
+        addButtons();
+
         moo();
+    }
+
+    private void addButtons() {
+        FlowPane flow = new FlowPane();
+        flow.setPadding(new Insets(10, 10, 10, 10));
+        flow.setStyle("-fx-background-color: DAE6F3;");
+        flow.setHgap(5);
+
+        northSouth.setBottom(flow);
+
+        Button hpIncrease = new Button("HP up");
+        Button hpDecrease = new Button("Hp down");
+        Button dodgeDamageIncrease = new Button("Add dodge damage");
+        Button dodgeDamageDecrease = new Button("Reduce dodge damage");
+
+        Button dodgePeriodIncrease = new Button("Dodge period increase");
+        Button dodgePeriodDecrease = new Button("Dodge period decrease");
+
+        Button armorIncrease = new Button("Armor up");
+        Button armorDecrease = new Button("Armor down");
+
+        flow.getChildren().addAll(
+                hpIncrease,
+                hpDecrease,
+                dodgeDamageIncrease,
+                dodgeDamageDecrease,
+                dodgePeriodIncrease,
+                dodgePeriodDecrease,
+                armorIncrease,
+                armorDecrease
+        );
+
+        hpIncrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.curHealth.targetValue += 10;
+            }
+        });
+
+        hpDecrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.curHealth.targetValue -= 10;
+            }
+        });
+
+        dodgeDamageIncrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.dodgeDamage += 10;
+            }
+        });
+
+        dodgeDamageDecrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.dodgeDamage -= 10;
+            }
+        });
+
+        armorIncrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.curArmour += 10;
+            }
+        });
+
+        armorDecrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.curArmour -= 10;
+            }
+        });
+
+        dodgePeriodIncrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.dodgePeriod += 100;
+            }
+        });
+
+        dodgePeriodDecrease.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                tempData.dodgePeriod -= 100;
+            }
+        });
     }
 
     private void moo() {
@@ -69,10 +156,14 @@ public class HealthBarPane {
 
                 tween.run();
 
+                tempData.curHealth.run();
+
                 g2d.fillOval(200, tween.curValue - 10, 20, 20);
             }
         }.start();
     }
+
+    private double hpChange = 0;
 
     private void healthBar(GraphicsContext g2d) {
         g2d.setFill(new Color(0.1,0.7,0.3, 1));
@@ -80,16 +171,36 @@ public class HealthBarPane {
         // Health bar
         g2d.fillRect(
                 HEALTH_X,
-                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curHealth / (double)tempData.maxHealth) * HEALTH_HEIGHT)),
+                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curHealth.curValue / (double)tempData.maxHealth) * HEALTH_HEIGHT)),
                 HEALTH_WIDTH,
-                (((double)tempData.curHealth / (double)tempData.maxHealth) * HEALTH_HEIGHT)
+                (((double)tempData.curHealth.curValue / (double)tempData.maxHealth) * HEALTH_HEIGHT)
         );
+
+        if(tempData.curHealth.curValue != tempData.curHealth.targetValue) {
+            if(hpChange <= 0.02) {
+                hpChange = 1;
+            } else {
+                hpChange -= 0.01;
+            }
+
+            g2d.setFill(new Color(0.1,1 * hpChange,1 - (1*hpChange), 1));
+
+            // Health bar
+            g2d.fillRect(
+                    HEALTH_X,
+                    HEALTH_Y + (HEALTH_HEIGHT - (((double)Math.max(tempData.curHealth.curValue, tempData.curHealth.targetValue) / (double)tempData.maxHealth) * HEALTH_HEIGHT)),
+                    HEALTH_WIDTH,
+                    (((double)Math.abs(tempData.curHealth.curValue-tempData.curHealth.targetValue) / (double)tempData.maxHealth) * HEALTH_HEIGHT)
+            );
+        } else {
+            hpChange = 0;
+        }
     }
 
     private void dodgeDamage(GraphicsContext g2d) {
         g2d.setFill(new Color(0.8,0.1,0.2, 0.7));
 
-        double dodgeDamageStartY = HEALTH_Y + (HEALTH_HEIGHT - ((((double)tempData.curHealth) / (double)tempData.maxHealth) * HEALTH_HEIGHT));
+        double dodgeDamageStartY = HEALTH_Y + (HEALTH_HEIGHT - ((((double)tempData.curHealth.curValue) / (double)tempData.maxHealth) * HEALTH_HEIGHT));
         double dodgeDamageHeight = ((((double)tempData.dodgeDamage) / (double)tempData.maxHealth) * HEALTH_HEIGHT);
 
         g2d.fillRect(
