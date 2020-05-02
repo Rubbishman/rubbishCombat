@@ -12,6 +12,7 @@ import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.reducer.CombatReducer;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
+import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,6 +84,12 @@ public class TestDamage {
                         5,
                         100
                 ),
-                dodoge);
+                new DodgeAttribute(
+                        20,
+                        100,
+                        20,
+                        1000,
+                        10
+                ));
     }
 }

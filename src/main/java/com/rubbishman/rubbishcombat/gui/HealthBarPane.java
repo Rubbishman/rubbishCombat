@@ -37,8 +37,8 @@ public class HealthBarPane {
                 100,
                 new TweenHelper(47, 47, 0, 40, 0.01),
                 200,
-                150,
-                40,
+                new TweenHelper(150, 150, 0, 40, 0.03),
+                new TweenHelper(40, 40, 0, 40, 0.03),
                 1500
         );
 
@@ -105,25 +105,25 @@ public class HealthBarPane {
 
         dodgeDamageIncrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                tempData.dodgeDamage += 10;
+                tempData.dodgeDamage.targetValue += 10;
             }
         });
 
         dodgeDamageDecrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                tempData.dodgeDamage -= 10;
+                tempData.dodgeDamage.targetValue -= 10;
             }
         });
 
         armorIncrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                tempData.curArmour += 10;
+                tempData.curArmour.targetValue += 10;
             }
         });
 
         armorDecrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                tempData.curArmour -= 10;
+                tempData.curArmour.targetValue -= 10;
             }
         });
 
@@ -157,6 +157,8 @@ public class HealthBarPane {
                 tween.run();
 
                 tempData.curHealth.run();
+                tempData.curArmour.run();
+                tempData.dodgeDamage.run();
 
                 g2d.fillOval(200, tween.curValue - 10, 20, 20);
             }
@@ -201,7 +203,7 @@ public class HealthBarPane {
         g2d.setFill(new Color(0.8,0.1,0.2, 0.7));
 
         double dodgeDamageStartY = HEALTH_Y + (HEALTH_HEIGHT - ((((double)tempData.curHealth.curValue) / (double)tempData.maxHealth) * HEALTH_HEIGHT));
-        double dodgeDamageHeight = ((((double)tempData.dodgeDamage) / (double)tempData.maxHealth) * HEALTH_HEIGHT);
+        double dodgeDamageHeight = ((((double)tempData.dodgeDamage.curValue) / (double)tempData.maxHealth) * HEALTH_HEIGHT);
 
         g2d.fillRect(
                 HEALTH_X + (HEALTH_WIDTH / 4),
@@ -267,15 +269,15 @@ public class HealthBarPane {
         g2d.setFill(new Color(0.9F, 0.9F, 0.3F, 0.8));
         g2d.fillRect(
                 HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
-                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curArmour / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
+                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
                 (double)HEALTH_WIDTH / 4,
-                (((double)tempData.curArmour / (double)tempData.maxArmour) * HEALTH_HEIGHT)
+                (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT)
         );
         g2d.strokeRect(
                 HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
-                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curArmour / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
+                HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
                 (double)HEALTH_WIDTH / 4,
-                (((double)tempData.curArmour / (double)tempData.maxArmour) * HEALTH_HEIGHT));
+                (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT));
     }
 
     private void finalBorder(GraphicsContext g2d) {

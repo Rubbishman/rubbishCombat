@@ -1,10 +1,10 @@
 package com.rubbishman.rubbishcombat.gui;
 
 public class TempData {
-    public TweenHelper curHealth;
-    public int maxHealth, maxArmour, curArmour, dodgeDamage, dodgePeriod;
+    public TweenHelper curHealth, curArmour, dodgeDamage;
+    public int maxHealth, maxArmour, dodgePeriod;
 
-    public TempData(int maxHealth, TweenHelper curHealth, int maxArmour, int curArmour, int dodgeDamage, int dodgePeriod) {
+    public TempData(int maxHealth, TweenHelper curHealth, int maxArmour, TweenHelper curArmour, TweenHelper dodgeDamage, int dodgePeriod) {
         this.maxHealth = maxHealth;
         this.curHealth = curHealth;
         this.maxArmour = maxArmour;
