@@ -17,12 +17,12 @@ public class ArmorStage implements StageProcessor {
         float percentDef = (float)combatEntity.defense.currentDefense / (float)combatEntity.defense.maxDefense;
 
         int defenseTaken = Math.min(damage.damage, (int)(percentDef * combatEntity.defense.defenseFactor));
-        int damageTaken = Math.max(damage.damage - defenseTaken, 0);
+        int remainingDamageTaken = Math.max(damage.damage - defenseTaken, 0);
 
         return new StageWrapResult(
                 new Damage(
                         damage.target,
-                        damageTaken,
+                        remainingDamageTaken,
                         damage.type
                 ),
                 new ArmorDamage(

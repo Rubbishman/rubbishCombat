@@ -80,10 +80,12 @@ public class TestDamage {
         CombatEntity combatEntity2 = rubbish.getState().getObject(combatEntityId);
 
         System.out.println(
-                " [ " + combatEntity2.currentHealth+ ", " + combatEntity2.defense.currentDefense + ", " + combatEntity2.dodge.current + " ]\n                " +
+                "" +
                 "HP dmg: " + (combatEntity.currentHealth - combatEntity2.currentHealth) +
                 ", armour dmg: " + (combatEntity.defense.currentDefense - combatEntity2.defense.currentDefense) +
-                ", dodge dmg: " + (combatEntity2.dodge.current - combatEntity.dodge.current));
+                ", dodge dmg: " + (combatEntity2.dodge.current - combatEntity.dodge.current) +
+                "\n                                                          " +
+                        "[ HP: " + combatEntity2.currentHealth+ ", AR: " + combatEntity2.defense.currentDefense + ", DD: " + combatEntity2.dodge.current + " ]");
         combatEntity = combatEntity2;
     }
 

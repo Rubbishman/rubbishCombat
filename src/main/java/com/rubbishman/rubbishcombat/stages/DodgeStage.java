@@ -17,12 +17,12 @@ public class DodgeStage implements StageProcessor {
         CombatEntity combatEntity = state.getObject(damage.target);
 
         int dodgeTaken = Math.min(damage.damage, combatEntity.dodge.factor);
-        int damageTaken = Math.max(damage.damage - dodgeTaken, 0);
+        int remainingDamageTaken = Math.max(damage.damage - dodgeTaken, 0);
 
         return new StageWrapResult(
                 new Damage(
                         damage.target,
-                        damageTaken,
+                        remainingDamageTaken,
                         damage.type
                 ),
                 new DodgeDamage(
