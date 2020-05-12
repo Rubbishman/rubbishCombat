@@ -1,56 +1,25 @@
 package com.rubbishman.rubbishcombat;
 
-import com.google.common.collect.ImmutableList;
-import com.rubbishman.rubbishRedux.experimental.actionTrack.stage.StageWrap;
-import com.rubbishman.rubbishRedux.external.RubbishContainer;
 import com.rubbishman.rubbishRedux.external.operational.action.createObject.CreateObject;
 import com.rubbishman.rubbishRedux.external.operational.action.createObject.ICreateObjectCallback;
-import com.rubbishman.rubbishRedux.external.operational.action.multistageAction.Stage.Stage;
 import com.rubbishman.rubbishRedux.external.operational.store.IdObject;
 import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
-import com.rubbishman.rubbishRedux.external.setup.RubbishContainerCreator;
-import com.rubbishman.rubbishRedux.external.setup.RubbishContainerOptions;
 import com.rubbishman.rubbishRedux.internal.dynamicObjectStore.GsonInstance;
 import com.rubbishman.rubbishcombat.actions.Damage;
-import com.rubbishman.rubbishcombat.reducer.CombatReducer;
-import com.rubbishman.rubbishcombat.stages.ArmorStage;
-import com.rubbishman.rubbishcombat.stages.DirectDamageStage;
-import com.rubbishman.rubbishcombat.stages.DodgeStage;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.concurrent.TimeUnit;
 
 public class TestDamage {
     public static Identifier combatEntityId;
-    private RubbishContainer rubbish;
+    private RubbishCombat rubbishCombat;
     @Before
     public void setup() {
-        RubbishContainerOptions options = new RubbishContainerOptions();
-
-        try {
-            Stage armor = options.createStage("armor");
-            Stage dodge = options.createStage("dodge");
-            Stage direct = options.createStage("direct");
-
-            options.setStageProcessor(Damage.class,
-                ImmutableList.of(
-                        new StageWrap(armor, new ArmorStage()),
-                        new StageWrap(dodge, new DodgeStage()),
-                        new StageWrap(direct, new DirectDamageStage())
-                )
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        options
-                .setReducer(new CombatReducer());
-
-        rubbish = RubbishContainerCreator.getRubbishContainer(options);
+        rubbishCombat = new RubbishCombat();
 
         createCombatEntity();
     }
@@ -59,7 +28,7 @@ public class TestDamage {
     public void stupidTest() {
         Damage dmg = new Damage(combatEntityId, 30, 2);
 
-        CombatEntity combatEntity = rubbish.getState().getObject(combatEntityId);
+        CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
         System.out.println(GsonInstance.getInstance().toJson(combatEntity));
 
         testDamage(dmg);
@@ -67,26 +36,35 @@ public class TestDamage {
         testDamage(dmg);
         testDamage(dmg);
         testDamage(dmg);
-        testDamage(dmg);
-        testDamage(dmg);
-        testDamage(dmg);
-        testDamage(dmg);
-        testDamage(dmg);
+
+        try {
+            Thread.sleep(TimeUnit.MILLISECONDS.convert(5, TimeUnit.SECONDS));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("\n------------------| 5 seconds later |--------------------------\n");
+
+        combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        rubbishCombat.rubbish.performActions();
+        compareCombatEntities(combatEntity, rubbishCombat.rubbish.getState().getObject(combatEntityId));
     }
 
     private void testDamage(Damage dmg) {
-        CombatEntity combatEntity = rubbish.getState().getObject(combatEntityId);
-        rubbish.performAction(dmg);
-        CombatEntity combatEntity2 = rubbish.getState().getObject(combatEntityId);
+        CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        rubbishCombat.rubbish.performAction(dmg);
+        CombatEntity combatEntity2 = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        compareCombatEntities(combatEntity, combatEntity2);
+    }
 
+    private void compareCombatEntities(CombatEntity combatEntity, CombatEntity combatEntity2) {
         System.out.println(
                 "" +
-                "HP dmg: " + (combatEntity.currentHealth - combatEntity2.currentHealth) +
-                ", armour dmg: " + (combatEntity.defense.currentDefense - combatEntity2.defense.currentDefense) +
-                ", dodge dmg: " + (combatEntity2.dodge.current - combatEntity.dodge.current) +
-                "\n                                                          " +
+                        "HP dmg: " + (combatEntity.currentHealth - combatEntity2.currentHealth) +
+                        ", armour dmg: " + (combatEntity.defense.currentDefense - combatEntity2.defense.currentDefense) +
+                        ", dodge dmg: " + (combatEntity2.dodge.current - combatEntity.dodge.current) +
+                        "\n                                                          " +
                         "[ HP: " + combatEntity2.currentHealth+ ", AR: " + combatEntity2.defense.currentDefense + ", DD: " + combatEntity2.dodge.current + " ]");
-        combatEntity = combatEntity2;
     }
 
     private void createCombatEntity() {
@@ -100,7 +78,7 @@ public class TestDamage {
                     }
                 });
 
-        rubbish.performAction(createObject);
+        rubbishCombat.rubbish.performAction(createObject);
     }
 
     private CombatEntity standardCombatEntity() {
@@ -111,13 +89,13 @@ public class TestDamage {
                         200,
                         200,
                         40,
-                        5,
-                        100
+                        TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
+                        5
                 ),
                 new DodgeAttribute(
                         0,
                         5,
-                        1000,
+                        TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
                         10
                 ));
     }

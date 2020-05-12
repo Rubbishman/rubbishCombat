@@ -1,17 +1,28 @@
 package com.rubbishman.rubbishcombat.state.attribute;
 
 public class DefensiveAttribute {
-    public final int currentDefense;
-    public final int maxDefense;
-    public final int defenseFactor;
-    public final int regenPeriod;
-    public final int regenFactor;
+    public final long currentDefense;
+    public final long maxDefense;
+    public final long defenseFactor;
+    public final long regenPeriod;
+    public final long regenFactor;
+    public final double regenRounding;
 
-    public DefensiveAttribute(int currentDefense, int maxDefense, int defenseFactor, int regenPeriod, int regenFactor) {
+    public DefensiveAttribute(long currentDefense, long maxDefense, long defenseFactor, long regenPeriod, long regenFactor) {
         this.currentDefense = currentDefense;
         this.maxDefense = maxDefense;
         this.defenseFactor = defenseFactor;
         this.regenPeriod = regenPeriod;
         this.regenFactor = regenFactor;
+        this.regenRounding = 0;
+    }
+
+    public DefensiveAttribute(long currentDefense, long maxDefense, long defenseFactor, long regenPeriod, long regenFactor, double regenRounding) {
+        this.currentDefense = currentDefense;
+        this.maxDefense = maxDefense;
+        this.defenseFactor = defenseFactor;
+        this.regenPeriod = regenPeriod;
+        this.regenFactor = regenFactor;
+        this.regenRounding = regenRounding;
     }
 }

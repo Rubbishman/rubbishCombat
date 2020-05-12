@@ -1,9 +1,9 @@
 package com.rubbishman.rubbishcombat.stages;
 
-import com.rubbishman.rubbishRedux.experimental.actionTrack.stage.StageProcessor;
-import com.rubbishman.rubbishRedux.experimental.actionTrack.stage.StageWrapResult;
-import com.rubbishman.rubbishRedux.experimental.actionTrack.stage.StageWrappedAction;
 import com.rubbishman.rubbishRedux.external.operational.store.ObjectStore;
+import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.stage.StageProcessor;
+import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.stage.StageWrapResult;
+import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.stage.StageWrappedAction;
 import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.actions.internalcombat.DirectDamage;
 

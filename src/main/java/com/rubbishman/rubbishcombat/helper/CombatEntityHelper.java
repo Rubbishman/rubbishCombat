@@ -4,6 +4,8 @@ import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
 
+import java.util.concurrent.TimeUnit;
+
 public class CombatEntityHelper {
     public static CombatEntity takeArmorDamage(CombatEntity combatEntity, int damageTaken) {
         return new CombatEntity(
@@ -15,6 +17,25 @@ public class CombatEntityHelper {
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor
+                ),
+                combatEntity.dodge);
+    }
+
+    public static CombatEntity regenArmor(CombatEntity combatEntity, long elapsedTime) {
+        double regen = ((double)elapsedTime / combatEntity.defense.regenPeriod) * combatEntity.defense.regenFactor;
+        int intRegen = (int)regen;
+        double remainder = regen - intRegen;
+
+        return new CombatEntity(
+                combatEntity.currentHealth,
+                combatEntity.maxHealth,
+                new DefensiveAttribute(
+                        Math.min(combatEntity.defense.currentDefense + intRegen, combatEntity.defense.maxDefense),
+                        combatEntity.defense.maxDefense,
+                        combatEntity.defense.defenseFactor,
+                        combatEntity.defense.regenPeriod,
+                        combatEntity.defense.regenFactor,
+                        remainder
                 ),
                 combatEntity.dodge);
     }
