@@ -6,6 +6,7 @@ import com.rubbishman.rubbishRedux.external.operational.action.multistageAction.
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerCreator;
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerOptions;
 import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.stage.StageWrap;
+import com.rubbishman.rubbishRedux.internal.timekeeper.TimeKeeper;
 import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.reducer.CombatReducer;
 import com.rubbishman.rubbishcombat.stages.ArmorStage;
@@ -17,6 +18,20 @@ public class RubbishCombat {
     public RubbishContainer rubbish;
 
     public RubbishCombat() {
+        RubbishContainerOptions options = setupOptions();
+
+        rubbish = RubbishContainerCreator.getRubbishContainer(options);
+    }
+
+    public RubbishCombat(TimeKeeper timeKeeper) {
+        RubbishContainerOptions options = setupOptions();
+
+        options.setTimeKeeper(timeKeeper);
+
+        rubbish = RubbishContainerCreator.getRubbishContainer(options);
+    }
+
+    private RubbishContainerOptions setupOptions() {
         RubbishContainerOptions options = new RubbishContainerOptions();
 
         try {
@@ -40,6 +55,6 @@ public class RubbishCombat {
         options
                 .setReducer(new CombatReducer());
 
-        rubbish = RubbishContainerCreator.getRubbishContainer(options);
+        return options;
     }
 }

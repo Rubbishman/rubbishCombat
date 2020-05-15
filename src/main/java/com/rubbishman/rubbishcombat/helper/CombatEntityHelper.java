@@ -53,6 +53,19 @@ public class CombatEntityHelper {
                 ));
     }
 
+    public static CombatEntity resolveDodgeDamage(CombatEntity combatEntity, int damageTaken) {
+        return new CombatEntity(
+                Math.max(combatEntity.currentHealth - damageTaken, 0),
+                combatEntity.maxHealth,
+                combatEntity.defense,
+                new DodgeAttribute(
+                        combatEntity.dodge.current - damageTaken,
+                        combatEntity.dodge.factor,
+                        combatEntity.dodge.period,
+                        combatEntity.dodge.periodFactor
+                ));
+    }
+
     public static CombatEntity takeDirectDamage(CombatEntity combatEntity, int damageTaken) {
         return new CombatEntity(
                 Math.max(combatEntity.currentHealth - damageTaken, 0),

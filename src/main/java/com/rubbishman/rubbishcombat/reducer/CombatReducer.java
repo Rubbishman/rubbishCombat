@@ -36,11 +36,14 @@ public class CombatReducer extends IRubbishReducer {
                     )
             );
 
+            long period = combatEntity.dodge.period / damage.damage;
+            long repeats = combatEntity.dodge.period / period;
+
             rubbishContainer.createTimer(
                     rubbishContainer.getNowTime(),
-                    new DodgeDamageOTResolution(createStore.createdObject.id),
-                    TimeUnit.NANOSECONDS.convert(30, TimeUnit.MILLISECONDS),
-                    combatEntity.dodge.period / TimeUnit.NANOSECONDS.convert(30, TimeUnit.MILLISECONDS)
+                    new DodgeDamageOTResolution(createStore.createdObject.id, 1),
+                    period,
+                    repeats
             );
 
             state = createStore.state;
@@ -61,19 +64,13 @@ public class CombatReducer extends IRubbishReducer {
 
             CombatEntity combatEntity = state.getObject(ddot.target);
 
-            long diff = Math.min(ddot.startTime + ddot.period, getNowTime()) - ddot.curTime;
-
-            double damage = ((double)diff / ddot.period) * ddot.damage;
-            int intDmg = (int)damage;
-            double remainder = damage - intDmg;
-            state = state.setObject(ddot.target, CombatEntityHelper.takeDirectDamage(combatEntity, intDmg));
+            state = state.setObject(ddot.target, CombatEntityHelper.resolveDodgeDamage(combatEntity, ddotRes.damage));
             state = state.setObject(ddotRes.target, new DodgeDamageOT(
                     ddot.target,
                     ddot.startTime,
                     getNowTime(),
-                    ddot.damage - intDmg,
-                    ddot.period,
-                    remainder
+                    ddot.damage - ddotRes.damage,
+                    ddot.period
             ));
         }
 

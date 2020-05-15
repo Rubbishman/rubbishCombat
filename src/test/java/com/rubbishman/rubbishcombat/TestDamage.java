@@ -5,10 +5,12 @@ import com.rubbishman.rubbishRedux.external.operational.action.createObject.ICre
 import com.rubbishman.rubbishRedux.external.operational.store.IdObject;
 import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
 import com.rubbishman.rubbishRedux.internal.dynamicObjectStore.GsonInstance;
+import com.rubbishman.rubbishRedux.internal.timekeeper.TimeKeeper;
 import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,9 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class TestDamage {
     public static Identifier combatEntityId;
     private RubbishCombat rubbishCombat;
+    private TestTimeKeeper testTimeKeeper;
     @Before
     public void setup() {
-        rubbishCombat = new RubbishCombat();
+        testTimeKeeper = new TestTimeKeeper(0);
+        rubbishCombat = new RubbishCombat(testTimeKeeper);
 
         createCombatEntity();
     }
@@ -37,17 +41,31 @@ public class TestDamage {
         testDamage(dmg);
         testDamage(dmg);
 
-        try {
-            Thread.sleep(TimeUnit.MILLISECONDS.convert(5, TimeUnit.SECONDS));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        rubbishCombat.rubbish.performActions();// This is because of a bug...
 
-        System.out.println("\n------------------| 5 seconds later |--------------------------\n");
+        assertDodgeDamageValue(12);
 
-        combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        progressTimeTo(TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS) / 3);
+        assertDodgeDamageValue(10);
+
+        progressTimeTo(TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS) / 3 * 2);
+        assertDodgeDamageValue(5);
+
+        progressTimeTo(TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS));
+
+        assertDodgeDamageValue(0);
+    }
+
+    private void progressTimeTo(long value) {
+        CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        testTimeKeeper.setNewTime(value);
         rubbishCombat.rubbish.performActions();
         compareCombatEntities(combatEntity, rubbishCombat.rubbish.getState().getObject(combatEntityId));
+    }
+
+    private void assertDodgeDamageValue(int value) {
+        CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
+        Assert.assertEquals(value,combatEntity.dodge.current);
     }
 
     private void testDamage(Damage dmg) {
