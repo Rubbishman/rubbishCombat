@@ -72,6 +72,10 @@ public class CombatReducer extends IRubbishReducer {
                     ddot.damage - ddotRes.damage,
                     ddot.period
             ));
+        } else if(action instanceof HealthRegen) {
+            HealthRegen healthRegen = (HealthRegen)action;
+            CombatEntity combatEntity = state.getObject(healthRegen.target);
+            state = state.setObject(healthRegen.target, CombatEntityHelper.healthRegen(combatEntity, healthRegen.amount));
         }
 
         return state;

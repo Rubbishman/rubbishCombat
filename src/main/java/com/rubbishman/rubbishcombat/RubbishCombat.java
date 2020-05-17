@@ -14,13 +14,20 @@ import com.rubbishman.rubbishcombat.stages.DirectDamageStage;
 import com.rubbishman.rubbishcombat.stages.DodgeStage;
 import com.rubbishman.rubbishcombat.ticksystem.ArmorRegenSystem;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class RubbishCombat {
     public RubbishContainer rubbish;
+    private ScheduledExecutorService executor;
 
     public RubbishCombat() {
         RubbishContainerOptions options = setupOptions();
 
         rubbish = RubbishContainerCreator.getRubbishContainer(options);
+
+         executor = Executors.newSingleThreadScheduledExecutor();
     }
 
     public RubbishCombat(TimeKeeper timeKeeper) {
@@ -57,4 +64,16 @@ public class RubbishCombat {
 
         return options;
     }
+
+     public void startTimer() {
+         Runnable runner = new Runnable() {
+             @Override
+             public void run() {
+                 rubbish.performActions();
+             }
+         };
+
+         executor.scheduleAtFixedRate(runner, 0, 30, TimeUnit.MILLISECONDS);
+     }
+
 }

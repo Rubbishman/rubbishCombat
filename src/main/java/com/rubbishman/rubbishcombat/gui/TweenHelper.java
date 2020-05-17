@@ -4,7 +4,7 @@ public class TweenHelper {
     public double curValue, targetValue;
     public double curVelocity, maxVelocity, accel;
 
-    public TweenHelper(int curValue, int targetValue, double curVelocity, double maxVelocity, double accel) {
+    public TweenHelper(double curValue, double targetValue, double curVelocity, double maxVelocity, double accel) {
         this.curValue = curValue;
 
         this.targetValue = targetValue;

@@ -26,6 +26,14 @@ public class CombatEntityHelper {
         int intRegen = (int)regen;
         double remainder = regen - intRegen;
 
+        double newRemainder = combatEntity.defense.regenRounding + remainder;
+        int newRemainderRounded = (int)newRemainder;
+
+        if(newRemainderRounded > 0) {
+            newRemainder -= newRemainderRounded;
+            intRegen += newRemainderRounded;
+        }
+
         return new CombatEntity(
                 combatEntity.currentHealth,
                 combatEntity.maxHealth,
@@ -35,7 +43,7 @@ public class CombatEntityHelper {
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor,
-                        remainder
+                        newRemainder
                 ),
                 combatEntity.dodge);
     }
@@ -69,6 +77,14 @@ public class CombatEntityHelper {
     public static CombatEntity takeDirectDamage(CombatEntity combatEntity, int damageTaken) {
         return new CombatEntity(
                 Math.max(combatEntity.currentHealth - damageTaken, 0),
+                combatEntity.maxHealth,
+                combatEntity.defense,
+                combatEntity.dodge);
+    }
+
+    public static CombatEntity healthRegen(CombatEntity combatEntity, int amount) {
+        return new CombatEntity(
+                Math.min(combatEntity.currentHealth + amount, combatEntity.maxHealth),
                 combatEntity.maxHealth,
                 combatEntity.defense,
                 combatEntity.dodge);
