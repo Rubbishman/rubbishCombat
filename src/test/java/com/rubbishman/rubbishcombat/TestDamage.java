@@ -5,7 +5,6 @@ import com.rubbishman.rubbishRedux.external.operational.action.createObject.ICre
 import com.rubbishman.rubbishRedux.external.operational.store.IdObject;
 import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
 import com.rubbishman.rubbishRedux.internal.dynamicObjectStore.GsonInstance;
-import com.rubbishman.rubbishRedux.internal.timekeeper.TimeKeeper;
 import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
@@ -108,7 +107,9 @@ public class TestDamage {
                         200,
                         40,
                         TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
-                        5
+                        5,
+                        TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
+                        0
                 ),
                 new DodgeAttribute(
                         0,

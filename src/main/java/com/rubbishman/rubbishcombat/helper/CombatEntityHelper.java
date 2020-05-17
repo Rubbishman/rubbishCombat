@@ -4,20 +4,19 @@ import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
 
-import java.util.concurrent.TimeUnit;
-
 public class CombatEntityHelper {
-    public static CombatEntity takeArmorDamage(CombatEntity combatEntity, int damageTaken) {
+    public static CombatEntity indicateArmorDamage(CombatEntity combatEntity, int damageTaken) {
         return new CombatEntity(
                 combatEntity.currentHealth,
                 combatEntity.maxHealth,
                 new DefensiveAttribute(
-                        Math.max(combatEntity.defense.currentDefense - damageTaken, 0),
+                        combatEntity.defense.currentDefense,
                         combatEntity.defense.maxDefense,
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
-                        combatEntity.defense.regenFactor
-                ),
+                        combatEntity.defense.regenFactor,
+                        combatEntity.defense.damagePeriod,
+                        combatEntity.defense.defenseDamage + damageTaken),
                 combatEntity.dodge);
     }
 
@@ -43,8 +42,10 @@ public class CombatEntityHelper {
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor,
-                        newRemainder
-                ),
+                        newRemainder,
+                        combatEntity.defense.damagePeriod,
+                        combatEntity.defense.defenseDamage
+                        ),
                 combatEntity.dodge);
     }
 
@@ -72,6 +73,24 @@ public class CombatEntityHelper {
                         combatEntity.dodge.period,
                         combatEntity.dodge.periodFactor
                 ));
+    }
+
+    public static CombatEntity resolveArmorDamage(CombatEntity combatEntity, int damageTaken) {
+        return new CombatEntity(
+                combatEntity.currentHealth,
+                combatEntity.maxHealth,
+                new DefensiveAttribute(
+                        Math.max(combatEntity.defense.currentDefense - damageTaken, 0),
+                        combatEntity.defense.maxDefense,
+                        combatEntity.defense.defenseFactor,
+                        combatEntity.defense.regenPeriod,
+                        combatEntity.defense.regenFactor,
+                        combatEntity.defense.regenRounding,
+                        combatEntity.defense.damagePeriod,
+                        combatEntity.defense.defenseDamage - damageTaken
+                        ),
+                combatEntity.dodge
+        );
     }
 
     public static CombatEntity takeDirectDamage(CombatEntity combatEntity, int damageTaken) {

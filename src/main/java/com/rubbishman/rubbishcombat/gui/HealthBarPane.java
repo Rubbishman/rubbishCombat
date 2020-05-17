@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -27,8 +29,6 @@ public class HealthBarPane {
 
     public static final int HEALTH_WIDTH = 50;
     public static final int HEALTH_HEIGHT = 440;
-
-    public static final int DODGE_DAMAGE_INC = 250;
 
     private static TempData tempData;
 
@@ -49,7 +49,8 @@ public class HealthBarPane {
                 new TweenHelper(combatEntity.currentHealth, combatEntity.currentHealth, 0, 40, 0.05),
                 combatEntity.defense.maxDefense,
                 new TweenHelper(combatEntity.defense.currentDefense, combatEntity.defense.currentDefense, 0, 40, 0.1),
-                combatEntity.dodge.current
+                combatEntity.dodge.current,
+                combatEntity.defense.defenseDamage
         );
 
         canvas = new Canvas(WIDTH, HEIGHT);
@@ -59,6 +60,22 @@ public class HealthBarPane {
         northSouth.setCenter(canvas);
 
         addButtons();
+
+        primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+
+                if(event.getCode() == KeyCode.A
+                    || event.getCode() == KeyCode.S
+                    || event.getCode() == KeyCode.D) {
+                    rubbishCombat.rubbish.addAction(new HealthRegen(combatEntityId, 10));
+                } else if(event.getCode() == KeyCode.J
+                        || event.getCode() == KeyCode.K
+                        || event.getCode() == KeyCode.L) {
+                    rubbishCombat.rubbish.addAction(new Damage(combatEntityId, 30, 2));
+                }
+            }
+        });
 
         moo();
     }
@@ -106,6 +123,8 @@ public class HealthBarPane {
 
                 armorBar(g2d);
 
+                armorDamage(g2d);
+
                 finalBorder(g2d);
 
                 tempData.curHealth.run();
@@ -148,6 +167,20 @@ public class HealthBarPane {
                 HEALTH_X + (HEALTH_WIDTH / 4),
                 dodgeDamageStartY,
                 (double)HEALTH_WIDTH / 4 * 3,
+                dodgeDamageHeight
+        );
+    }
+
+    private void armorDamage(GraphicsContext g2d) {
+        g2d.setFill(new Color(0.8,0.1,0.2, 0.7));
+
+        double dodgeDamageStartY = HEALTH_Y + (HEALTH_HEIGHT - ((((double)tempData.curArmour.curValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT));
+        double dodgeDamageHeight = ((((double)tempData.armorDamage) / (double)tempData.maxArmour) * HEALTH_HEIGHT);
+
+        g2d.fillRect(
+                HEALTH_X + (HEALTH_WIDTH / 8 * 6),
+                dodgeDamageStartY,
+                (double)HEALTH_WIDTH / 8,
                 dodgeDamageHeight
         );
     }
@@ -198,5 +231,6 @@ public class HealthBarPane {
         tempData.curHealth.targetValue = combatEntity.currentHealth;
         tempData.curArmour.targetValue = combatEntity.defense.currentDefense;
         tempData.dodgeDamage = combatEntity.dodge.current;
+        tempData.armorDamage = combatEntity.defense.defenseDamage;
     }
 }

@@ -7,6 +7,7 @@ import com.rubbishman.rubbishcombat.actions.internalcombat.*;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.actions.Damage;
 import com.rubbishman.rubbishcombat.helper.CombatEntityHelper;
+import com.rubbishman.rubbishcombat.state.affects.ArmorDamageOT;
 import com.rubbishman.rubbishcombat.state.affects.DodgeDamageOT;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,42 @@ public class CombatReducer extends IRubbishReducer {
             ArmorDamage damage = (ArmorDamage)action;
             CombatEntity combatEntity = state.getObject(damage.target);
 
-            state = state.setObject(damage.target, CombatEntityHelper.takeArmorDamage(combatEntity, damage.damage));
+            if(damage.damage == 0) {
+                return state;
+            }
+
+            state = state.setObject(damage.target, CombatEntityHelper.indicateArmorDamage(combatEntity, damage.damage));
+            CreatedObjectStore createStore = state.createObject(
+                    new ArmorDamageOT(
+                            damage.target,
+                            rubbishContainer.getNowTime(),
+                            rubbishContainer.getNowTime(),
+                            damage.damage,
+                            combatEntity.defense.damagePeriod
+                    )
+            );
+
+            long period = combatEntity.defense.damagePeriod / damage.damage;
+            long repeats = combatEntity.defense.damagePeriod / period;
+
+            rubbishContainer.createTimer(
+                    rubbishContainer.getNowTime(),
+                    new ArmorDamageOTResolution(createStore.createdObject.id, 1),
+                    period,
+                    repeats
+            );
+
+            state = createStore.state;
+        } else if(action instanceof DirectDamage) {
+            DirectDamage damage = (DirectDamage)action;
+            CombatEntity combatEntity = state.getObject(damage.target);
+
+            state = state.setObject(damage.target, CombatEntityHelper.takeDirectDamage(combatEntity, damage.damage));
+        } else if(action instanceof ArmorRegen) {
+            ArmorRegen regen = (ArmorRegen)action;
+            CombatEntity combatEntity = state.getObject(regen.target);
+
+            state = state.setObject(regen.target, CombatEntityHelper.regenArmor(combatEntity, getElapsedTime()));
         } else if(action instanceof DodgeDamage) {
             DodgeDamage damage = (DodgeDamage)action;
             CombatEntity combatEntity = state.getObject(damage.target);
@@ -47,16 +83,6 @@ public class CombatReducer extends IRubbishReducer {
             );
 
             state = createStore.state;
-        } else if(action instanceof DirectDamage) {
-            DirectDamage damage = (DirectDamage)action;
-            CombatEntity combatEntity = state.getObject(damage.target);
-
-            state = state.setObject(damage.target, CombatEntityHelper.takeDirectDamage(combatEntity, damage.damage));
-        } else if(action instanceof ArmorRegen) {
-            ArmorRegen regen = (ArmorRegen)action;
-            CombatEntity combatEntity = state.getObject(regen.target);
-
-            state = state.setObject(regen.target, CombatEntityHelper.regenArmor(combatEntity, getElapsedTime()));
         } else if (action instanceof DodgeDamageOTResolution) {
             DodgeDamageOTResolution ddotRes = (DodgeDamageOTResolution)action;
 
@@ -71,6 +97,21 @@ public class CombatReducer extends IRubbishReducer {
                     getNowTime(),
                     ddot.damage - ddotRes.damage,
                     ddot.period
+            ));
+        } else if (action instanceof ArmorDamageOTResolution) {
+            ArmorDamageOTResolution adotRes = (ArmorDamageOTResolution)action;
+
+            ArmorDamageOT adot = state.getObject(adotRes.target);
+
+            CombatEntity combatEntity = state.getObject(adot.target);
+
+            state = state.setObject(adot.target, CombatEntityHelper.resolveArmorDamage(combatEntity, adotRes.damage));
+            state = state.setObject(adotRes.target, new ArmorDamageOT(
+                    adot.target,
+                    adot.startTime,
+                    getNowTime(),
+                    adot.damage - adotRes.damage,
+                    adot.period
             ));
         } else if(action instanceof HealthRegen) {
             HealthRegen healthRegen = (HealthRegen)action;

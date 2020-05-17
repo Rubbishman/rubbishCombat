@@ -49,20 +49,21 @@ public class Boostrap extends Application {
 
     private CombatEntity standardCombatEntity() {
         return new CombatEntity(
-                100,
-                100,
-                new DefensiveAttribute(
-                        200,
-                        200,
-                        40,
-                        TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
-                        15
-                ),
-                new DodgeAttribute(
-                        0,
-                        5,
-                        TimeUnit.NANOSECONDS.convert(5, TimeUnit.SECONDS),
-                        10
-                ));
+            100,
+            100,
+            new DefensiveAttribute(
+                    200,
+                    200,
+                    40,
+                    TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
+                    15,
+                    TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
+                    0),
+            new DodgeAttribute(
+                    0,
+                    5,
+                    TimeUnit.NANOSECONDS.convert(5, TimeUnit.SECONDS),
+                    10
+            ));
     }
 }
