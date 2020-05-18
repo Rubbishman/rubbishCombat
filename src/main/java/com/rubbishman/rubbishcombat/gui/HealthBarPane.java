@@ -123,7 +123,7 @@ public class HealthBarPane {
 
                 armorBar(g2d);
 
-                armorDamage(g2d);
+//                armorDamage(g2d);
 
                 finalBorder(g2d);
 
@@ -193,7 +193,7 @@ public class HealthBarPane {
                 HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
                 HEALTH_Y + (HEALTH_HEIGHT - (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
                 (double)HEALTH_WIDTH / 4,
-                (((double)tempData.curArmour.curValue / (double)tempData.maxArmour) * HEALTH_HEIGHT)
+                (((double)(tempData.curArmour.curValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT)
         );
         g2d.strokeRect(
                 HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
@@ -209,14 +209,14 @@ public class HealthBarPane {
                     HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
                     HEALTH_Y + (HEALTH_HEIGHT - (((double)Math.max(tempData.curArmour.curValue, tempData.curArmour.targetValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
                     (double)HEALTH_WIDTH / 4,
-                    (((double)Math.abs(tempData.curArmour.curValue-tempData.curArmour.targetValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT)
+                    (((double)Math.abs(tempData.curArmour.curValue-(tempData.curArmour.targetValue - tempData.armorDamage)) / (double)tempData.maxArmour) * HEALTH_HEIGHT)
             );
 
             g2d.strokeRect(
                     HEALTH_X + ((double)HEALTH_WIDTH / 4 * 3),
                     HEALTH_Y + (HEALTH_HEIGHT - (((double)Math.max(tempData.curArmour.curValue, tempData.curArmour.targetValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT)),
                     (double)HEALTH_WIDTH / 4,
-                    (((double)Math.abs(tempData.curArmour.curValue-tempData.curArmour.targetValue) / (double)tempData.maxArmour) * HEALTH_HEIGHT));
+                    (((double)Math.abs(tempData.curArmour.curValue-(tempData.curArmour.targetValue - tempData.armorDamage)) / (double)tempData.maxArmour) * HEALTH_HEIGHT));
         }
     }
 
