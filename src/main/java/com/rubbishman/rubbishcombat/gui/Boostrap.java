@@ -5,6 +5,7 @@ import com.rubbishman.rubbishRedux.external.operational.action.createObject.ICre
 import com.rubbishman.rubbishRedux.external.operational.store.IdObject;
 import com.rubbishman.rubbishRedux.external.operational.store.Identifier;
 import com.rubbishman.rubbishcombat.RubbishCombat;
+import com.rubbishman.rubbishcombat.gui.components.HealthBarPane;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;

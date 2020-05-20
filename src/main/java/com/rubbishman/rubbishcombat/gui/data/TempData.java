@@ -1,4 +1,6 @@
-package com.rubbishman.rubbishcombat.gui;
+package com.rubbishman.rubbishcombat.gui.data;
+
+import com.rubbishman.rubbishcombat.gui.helper.TweenHelper;
 
 public class TempData {
     public TweenHelper curHealth, curArmour;

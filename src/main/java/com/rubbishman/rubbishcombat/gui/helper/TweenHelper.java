@@ -1,4 +1,4 @@
-package com.rubbishman.rubbishcombat.gui;
+package com.rubbishman.rubbishcombat.gui.helper;
 
 public class TweenHelper {
     public double curValue, targetValue;
@@ -13,6 +13,7 @@ public class TweenHelper {
         this.accel = accel;
     }
 
+    // This is bad, it should get passed the nowTime...
     public void run() {
         if(curValue < targetValue) {
             curVelocity = Math.min(Math.max(curVelocity,0) + accel, maxVelocity);
