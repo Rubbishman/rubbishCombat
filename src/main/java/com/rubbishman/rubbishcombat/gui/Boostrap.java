@@ -55,14 +55,14 @@ public class Boostrap extends Application {
             new DefensiveAttribute(
                     200,
                     200,
-                    40,
+                    20,
                     TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
                     15,
                     TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
                     0),
             new DodgeAttribute(
                     0,
-                    5,
+                    8,
                     TimeUnit.NANOSECONDS.convert(5, TimeUnit.SECONDS),
                     10
             ));

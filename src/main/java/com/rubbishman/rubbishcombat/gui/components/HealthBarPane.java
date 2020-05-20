@@ -109,13 +109,13 @@ public class HealthBarPane {
 
         hpIncrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                rubbishCombat.rubbish.addAction(new HealthRegen(combatEntityId, 10));
+                rubbishCombat.rubbish.addAction(new HealthRegen(combatEntityId, 20));
             }
         });
 
         hpDecrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                rubbishCombat.rubbish.addAction(new Damage(combatEntityId, 30, 2));
+                rubbishCombat.rubbish.addAction(new Damage(combatEntityId, 20, 2));
 
                 int fullDamage = (int)(Math.random() * 30 + 10);
                 int armorDamage = (int)(Math.random() * fullDamage);
