@@ -19,7 +19,7 @@ public class CombatTextRendererPie extends ICombatTextRenderer {
 
         final String msg = combatText.fullDamage + "";
         final Text text = new Text(msg);
-        Font font = Font.font("Arial", 30);
+        Font font = Font.font("Arial", 18);
         text.setFont(font);
 
         final double width = text.getLayoutBounds().getWidth();
