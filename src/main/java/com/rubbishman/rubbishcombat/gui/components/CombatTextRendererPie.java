@@ -28,6 +28,20 @@ public class CombatTextRendererPie extends ICombatTextRenderer {
         g2d.setFont(font);
         g2d.fillText(msg, combatText.x, combatText.y);
 
+        g2d.strokeLine(
+                combatText.x + width + 2,
+                combatText.y + 2,
+                combatText.x,
+                combatText.y + 2
+        );
+
+        g2d.strokeLine(
+                combatText.x + width + 2,
+                combatText.y + 2,
+                combatText.x + width + 2,
+                combatText.y - height * 0.5
+        );
+
         double damagePer = (double)(combatText.fullDamage - combatText.dodgeDamage - combatText.armorDamage) / combatText.fullDamage;
         double armorPer = (double)combatText.armorDamage / combatText.fullDamage;
         double dodgePer = (double)combatText.dodgeDamage / combatText.fullDamage;
@@ -38,12 +52,12 @@ public class CombatTextRendererPie extends ICombatTextRenderer {
             g2d.setFill(Color.RED);
 
             g2d.fillArc(
-                    combatText.x + width,
-                    combatText.y,
-                    15,
-                    15,
-                    0,
-                    360 * damagePer,
+                    combatText.x + width - 5,
+                    combatText.y - 5,
+                    16,
+                    16,
+                    90,
+                    -270 * damagePer,
                     ArcType.ROUND);
         }
 
@@ -51,34 +65,34 @@ public class CombatTextRendererPie extends ICombatTextRenderer {
             g2d.setFill(Color.YELLOW);
 
             g2d.fillArc(
-                    combatText.x + width,
-                    combatText.y,
-                    15,
-                    15,
-                    360 * damagePer,
-                    360 * armorPer,
+                    combatText.x + width - 5,
+                    combatText.y - 5,
+                    16,
+                    16,
+                    90 + -270 * damagePer,
+                    -270 * armorPer,
                     ArcType.ROUND);
         }
 
         if(dodgePer > 0) {
             g2d.setFill(Color.CADETBLUE);
             g2d.fillArc(
-                    combatText.x + width,
-                    combatText.y,
-                    15,
-                    15,
-                    360 * damagePer + 360 * armorPer,
-                    360 * dodgePer,
+                    combatText.x + width - 5,
+                    combatText.y - 5,
+                    16,
+                    16,
+                    90 + -270 * damagePer + -270 * armorPer,
+                    -270 * dodgePer,
                     ArcType.ROUND);
         }
 
         g2d.strokeArc(
-                combatText.x + width,
-                combatText.y,
-                15,
-                15,
-                0,
-                360,
+                combatText.x + width - 5,
+                combatText.y - 5,
+                16,
+                16,
+                90,
+                -270,
                 ArcType.OPEN);
     }
 }

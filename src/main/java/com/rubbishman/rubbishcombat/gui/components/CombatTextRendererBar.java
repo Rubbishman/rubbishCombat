@@ -35,25 +35,116 @@ public class CombatTextRendererBar extends ICombatTextRenderer {
 
         final double lineHeight = height * 2;
 
+        if(Math.random() > 0.5) {
+            horizontal(g2d, damagePer, armorPer, dodgePer, width, height);
+        } else {
+            vertical(g2d, damagePer, armorPer, dodgePer, width, height);
+        }
+    }
+
+    private void horizontal(GraphicsContext g2d, double damagePer, double armorPer, double dodgePer, double width, double height) {
         if(damagePer > 0) {
             g2d.setFill(Color.RED);
-            g2d.fillRect(combatText.x + width, 5 + combatText.y - height + (height * armorPer), 5, height * damagePer);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height + (height * armorPer),
+                    5,
+                    height * damagePer
+            );
             g2d.setStroke(((Color)g2d.getFill()).darker().darker());
-            g2d.strokeRect(combatText.x + width, 5 + combatText.y - height + (height * armorPer), 5, height * damagePer);
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height + (height * armorPer),
+                    5,
+                    height * damagePer
+            );
         }
 
         if(armorPer > 0) {
             g2d.setFill(Color.YELLOW);
-            g2d.fillRect(combatText.x + width + 5, 5 + combatText.y - height, 5, height * armorPer);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height,
+                    5,
+                    height * armorPer
+            );
             g2d.setStroke(((Color)g2d.getFill()).darker().darker());
-            g2d.strokeRect(combatText.x + width + 5, 5 + combatText.y - height, 5, height * armorPer);
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height,
+                    5,
+                    height * armorPer
+            );
         }
 
         if(dodgePer > 0) {
             g2d.setFill(Color.PURPLE);
-            g2d.fillRect(combatText.x + width + 5, 5 + combatText.y - (height * dodgePer), 5, height * dodgePer);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - (height * dodgePer),
+                    5,
+                    height * dodgePer
+            );
             g2d.setStroke(((Color)g2d.getFill()).darker().darker());
-            g2d.strokeRect(combatText.x + width + 5, 5 + combatText.y - (height * dodgePer), 5, height * dodgePer);
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - (height * dodgePer),
+                    5,
+                    height * dodgePer
+            );
+        }
+    }
+
+    private void vertical(GraphicsContext g2d, double damagePer, double armorPer, double dodgePer, double width, double height) {
+        if(damagePer > 0) {
+            g2d.setFill(Color.RED);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height + (height * armorPer),
+                    5,
+                    height * damagePer
+            );
+            g2d.setStroke(((Color)g2d.getFill()).darker().darker());
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height + (height * armorPer),
+                    5,
+                    height * damagePer
+            );
+        }
+
+        if(armorPer > 0) {
+            g2d.setFill(Color.YELLOW);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height,
+                    5,
+                    height * armorPer
+            );
+            g2d.setStroke(((Color)g2d.getFill()).darker().darker());
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - height,
+                    5,
+                    height * armorPer
+            );
+        }
+
+        if(dodgePer > 0) {
+            g2d.setFill(Color.PURPLE);
+            g2d.fillRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - (height * dodgePer),
+                    5,
+                    height * dodgePer
+            );
+            g2d.setStroke(((Color)g2d.getFill()).darker().darker());
+            g2d.strokeRect(
+                    combatText.x + width + 5,
+                    5 + combatText.y - (height * dodgePer),
+                    5,
+                    height * dodgePer
+            );
         }
     }
 }

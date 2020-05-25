@@ -9,6 +9,7 @@ import com.rubbishman.rubbishcombat.RubbishCombat;
 import com.rubbishman.rubbishcombat.actions.internalcombat.ArmorDamage;
 import com.rubbishman.rubbishcombat.actions.internalcombat.DirectDamage;
 import com.rubbishman.rubbishcombat.actions.internalcombat.DodgeDamage;
+import com.rubbishman.rubbishcombat.gui.components.CombatTextRendererBar;
 import com.rubbishman.rubbishcombat.gui.components.CombatTextRendererPie;
 import com.rubbishman.rubbishcombat.gui.components.HealthBarPane;
 import com.rubbishman.rubbishcombat.gui.components.ICombatTextRenderer;
@@ -62,11 +63,19 @@ public class Boostrap extends Application {
 
                     int fullDamage = directDamage.damage + armorDamage.damage + dodgeDamage.damage;
 
-                    combatTextRendererArrayList.add(
-                            new CombatTextRendererPie(
-                                    new CombatText(x, y, fullDamage, armorDamage.damage, dodgeDamage.damage)
-                            )
-                    );
+                    if(Math.random() > 0.5) {
+                        combatTextRendererArrayList.add(
+                                new CombatTextRendererPie(
+                                        new CombatText(x, y, fullDamage, armorDamage.damage, dodgeDamage.damage)
+                                )
+                        );
+                    } else {
+                        combatTextRendererArrayList.add(
+                                new CombatTextRendererBar(
+                                        new CombatText(x, y, fullDamage, armorDamage.damage, dodgeDamage.damage)
+                                )
+                        );
+                    }
                 }
             }
             );
