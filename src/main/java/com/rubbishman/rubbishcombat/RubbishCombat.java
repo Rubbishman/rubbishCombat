@@ -5,6 +5,9 @@ import com.rubbishman.rubbishRedux.external.RubbishContainer;
 import com.rubbishman.rubbishRedux.external.operational.action.multistageAction.Stage.Stage;
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerCreator;
 import com.rubbishman.rubbishRedux.external.setup.RubbishContainerOptions;
+import com.rubbishman.rubbishRedux.external.setup_extra.TickSystem;
+import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.ActionTrack;
+import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.ActionTrackListener;
 import com.rubbishman.rubbishRedux.external.setup_extra.actionTrack.stage.StageWrap;
 import com.rubbishman.rubbishRedux.internal.timekeeper.TimeKeeper;
 import com.rubbishman.rubbishcombat.actions.Damage;
@@ -22,12 +25,37 @@ public class RubbishCombat {
     public RubbishContainer rubbish;
     private ScheduledExecutorService executor;
 
+    public Stage armor;
+    public Stage dodge;
+    public Stage direct;
+
     public RubbishCombat() {
         RubbishContainerOptions options = setupOptions();
 
         rubbish = RubbishContainerCreator.getRubbishContainer(options);
 
          executor = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    public RubbishCombat(Runnable afterTick, ActionTrackListener listener) {
+        RubbishContainerOptions options = setupOptions();
+
+        options.addListener(direct, listener); // Hard coded a bit ... :S
+        options.registerTickSystem(new TickSystem() {
+            @Override
+            public void beforeDispatchStarted(ActionTrack actionQueue, Long nowTime) {
+
+            }
+
+            @Override
+            public void afterDispatchFinished() {
+                afterTick.run();
+            }
+        });
+
+        rubbish = RubbishContainerCreator.getRubbishContainer(options);
+
+        executor = Executors.newSingleThreadScheduledExecutor();
     }
 
     public RubbishCombat(TimeKeeper timeKeeper) {
@@ -42,9 +70,9 @@ public class RubbishCombat {
         RubbishContainerOptions options = new RubbishContainerOptions();
 
         try {
-            Stage armor = options.createStage("armor");
-            Stage dodge = options.createStage("dodge");
-            Stage direct = options.createStage("direct");
+            armor = options.createStage("armor");
+            dodge = options.createStage("dodge");
+            direct = options.createStage("direct");
 
             options.setStageProcessor(Damage.class,
                     ImmutableList.of(

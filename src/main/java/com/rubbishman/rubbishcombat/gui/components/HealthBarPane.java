@@ -47,22 +47,14 @@ public class HealthBarPane {
     private ArmorBar armorBar = new ArmorBar();
     private DodgeBar dodgeBar = new DodgeBar();
 
-    private ArrayList<ICombatTextRenderer> combatTextRendererArrayList = new ArrayList();
+    public ArrayList<ICombatTextRenderer> combatTextRendererArrayList = new ArrayList();
 
-    public HealthBarPane(Stage primaryStage, RubbishCombat rubbishCombat, Identifier combatEntityId) {
+    public HealthBarPane(Stage primaryStage, RubbishCombat rubbishCombat, Identifier combatEntityId, TempData tempData) {
+        this.tempData = tempData;
         this.rubbishCombat = rubbishCombat;
         this.combatEntityId = combatEntityId;
 
         CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
-
-        tempData = new TempData(
-                combatEntity.maxHealth,
-                new TweenHelper(combatEntity.currentHealth, combatEntity.currentHealth, 0, 40, 0.05),
-                combatEntity.defense.maxDefense,
-                new TweenHelper(combatEntity.defense.currentDefense, combatEntity.defense.currentDefense, 0, 40, 0.1),
-                combatEntity.dodge.current,
-                combatEntity.defense.defenseDamage
-        );
 
         canvas = new Canvas(WIDTH, HEIGHT);
         northSouth = new BorderPane();
@@ -117,7 +109,7 @@ public class HealthBarPane {
             @Override public void handle(ActionEvent e) {
                 rubbishCombat.rubbish.addAction(new Damage(combatEntityId, 20, 2));
 
-                int fullDamage = (int)(Math.random() * 30 + 10);
+                /*int fullDamage = (int)(Math.random() * 30 + 10);
                 int armorDamage = (int)(Math.random() * fullDamage);
                 int dodgeDamage = (int)(Math.random() * (fullDamage - armorDamage));
 
@@ -128,29 +120,15 @@ public class HealthBarPane {
                         new CombatTextRendererPie(
                                 new CombatText(x, y, fullDamage, armorDamage, dodgeDamage)
                         )
-                );
-
-//                if(Math.random() < 0.5) {
-//                    combatTextRendererArrayList.add(
-//                            new CombatTextRendererBar(
-//                                    new CombatText(x, y, fullDamage, armorDamage, dodgeDamage)
-//                            )
-//                    );
-//                } else {
-//                    combatTextRendererArrayList.add(
-//                            new CombatTextRendererPie(
-//                                    new CombatText(x, y, fullDamage, armorDamage, dodgeDamage)
-//                            )
-//                    );
-//                }
+                );*/
             }
         });
     }
 
-    private void moo() {
+    public void moo() {
         new AnimationTimer() {
             public void handle(long l) {
-                updateTempData();// This needs to move to a TickSystem...
+//                updateTempData();// This needs to move to a TickSystem...
 
                 GraphicsContext g2d = canvas.getGraphicsContext2D();
                 g2d.clearRect(0,0, WIDTH, HEIGHT);
@@ -180,14 +158,5 @@ public class HealthBarPane {
                 tempData.curArmour.run();
             }
         }.start();
-    }
-
-    private void updateTempData() {
-        CombatEntity combatEntity = rubbishCombat.rubbish.getState().getObject(combatEntityId);
-
-        tempData.curHealth.targetValue = combatEntity.currentHealth;
-        tempData.curArmour.targetValue = combatEntity.defense.currentDefense;
-        tempData.dodgeDamage = combatEntity.dodge.current;
-        tempData.armorDamage = combatEntity.defense.defenseDamage;
     }
 }

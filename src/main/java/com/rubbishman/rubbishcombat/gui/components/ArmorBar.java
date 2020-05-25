@@ -38,5 +38,30 @@ public class ArmorBar {
                     (double)HealthBarPane.HEALTH_WIDTH / 4,
                     (((double)Math.abs(tempData.curArmour.curValue-(tempData.curArmour.targetValue - tempData.armorDamage)) / (double)tempData.maxArmour) * HealthBarPane.HEALTH_HEIGHT));
         }
+
+        /*double armorBitMin = Math.max(tempData.curArmour.curValue, tempData.curArmour.targetValue);
+
+        for(int i = 0; i < armorBitMin; i++) {
+            if(i % 5 == 0) {
+                continue;
+            }
+
+            g2d.setStroke(new Color(0.9F, 0.9F, 0.3F, 0.8).darker());
+
+            if(i % 10 == 0) {
+                g2d.setStroke(new Color(0.9F, 0.9F, 0.3F, 0.8).darker().darker());
+            }
+
+            if(i % 25 == 0) {
+                g2d.setStroke(new Color(0.9F, 0.9F, 0.3F, 0.8).darker().darker().darker());
+            }
+
+            g2d.strokeLine(
+                    HealthBarPane.HEALTH_X + ((double)HealthBarPane.HEALTH_WIDTH / 4 * 3),
+                    HealthBarPane.HEALTH_Y + HealthBarPane.HEALTH_HEIGHT - ((1 / (double)tempData.maxArmour) * HealthBarPane.HEALTH_HEIGHT * i),
+                    HealthBarPane.HEALTH_X + ((double)HealthBarPane.HEALTH_WIDTH / 4 * 3) + (double)HealthBarPane.HEALTH_WIDTH / 4,
+                    HealthBarPane.HEALTH_Y + HealthBarPane.HEALTH_HEIGHT - ((1 / (double)tempData.maxArmour) * HealthBarPane.HEALTH_HEIGHT * i)
+            );
+        }*/
     }
 }

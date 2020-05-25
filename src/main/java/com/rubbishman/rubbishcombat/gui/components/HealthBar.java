@@ -27,6 +27,27 @@ public class HealthBar {
                     (((double)Math.abs(tempData.curHealth.curValue-tempData.curHealth.targetValue) / (double)tempData.maxHealth) * HealthBarPane.HEALTH_HEIGHT)
             );
         }
+
+        double lifeBitMin = Math.max(tempData.curHealth.curValue, tempData.curHealth.targetValue);
+
+        for(int i = 0; i < lifeBitMin; i++) {
+            g2d.setStroke(new Color(0.1,0.5,0.2, 1));
+
+            if(i % 10 == 0) {
+                g2d.setStroke(new Color(0.1,0.4,0.2, 1));
+            }
+
+            if(i % 25 == 0) {
+                g2d.setStroke(new Color(0.1,0.1,0.2, 1));
+            }
+
+            g2d.strokeLine(
+                    HealthBarPane.HEALTH_X,
+                    HealthBarPane.HEALTH_Y + HealthBarPane.HEALTH_HEIGHT - ((1 / (double)tempData.maxHealth) * HealthBarPane.HEALTH_HEIGHT * i),
+                    HealthBarPane.HEALTH_X + HealthBarPane.HEALTH_WIDTH,
+                    HealthBarPane.HEALTH_Y + HealthBarPane.HEALTH_HEIGHT - ((1 / (double)tempData.maxHealth) * HealthBarPane.HEALTH_HEIGHT * i)
+            );
+        }
     }
 
     public void finalBorder(GraphicsContext g2d) {
