@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -108,19 +109,6 @@ public class HealthBarPane {
         hpDecrease.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 rubbishCombat.rubbish.addAction(new Damage(combatEntityId, 20, 2));
-
-                /*int fullDamage = (int)(Math.random() * 30 + 10);
-                int armorDamage = (int)(Math.random() * fullDamage);
-                int dodgeDamage = (int)(Math.random() * (fullDamage - armorDamage));
-
-                double x = Math.random() * 100 + 200;
-                double y = Math.random() * 150 + 300;
-
-                combatTextRendererArrayList.add(
-                        new CombatTextRendererPie(
-                                new CombatText(x, y, fullDamage, armorDamage, dodgeDamage)
-                        )
-                );*/
             }
         });
     }
@@ -156,7 +144,54 @@ public class HealthBarPane {
 
                 tempData.curHealth.run();
                 tempData.curArmour.run();
+
+                float smHeight = 200f;
+                float smWidth = 200f;
+                float start = 150f;
+                float riseStart = 200f;
+                float riseLength = 40f;
+                float topShelfLength = 5f;
+                float fallLength = 30f;
+                for(float x = start; x <= start + smWidth; x = x + 0.001f) {
+                    g2d.setStroke(Color.RED);
+                    float y = boostWindow(riseStart, riseLength, topShelfLength, fallLength, x);
+                    g2d.strokeLine(x + start,  300 - (y * smHeight), x + start, 300 - (y * smHeight));
+                }
             }
         }.start();
+    }
+
+    float boostWindow(float riseStart, float riseLength, float topShelfLength, float fallLength, float x) {
+        if(x < riseStart || x > riseStart + riseLength + fallLength + topShelfLength) {
+            return 0;
+        } else if(x >= riseStart + riseLength && x <= riseStart + riseLength + topShelfLength) {
+            return 1;
+        } else if(x >= riseStart && x <= riseStart + riseLength) {
+            return smoothstep(0, 1, (x - riseStart) / riseLength);
+        } else {
+            return smoothstep(1, 0, (x - riseStart - topShelfLength - riseLength) / (fallLength));
+        }
+    }
+
+    float smootherstep(float edge0, float edge1, float x) {
+        // Scale, and clamp x to 0..1 range
+        x = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+        // Evaluate polynomial
+        return x * x * x * (x * (x * 6 - 15) + 10);
+    }
+
+    public float smoothstep(float edge0, float edge1, float x) {
+        // Scale, bias and saturate x to 0..1 range
+        x = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+        // Evaluate polynomial
+        return x * x * (3 - 2 * x);
+    }
+
+    public float clamp(float x, float lowerlimit, float upperlimit) {
+        if (x < lowerlimit)
+            x = lowerlimit;
+        if (x > upperlimit)
+            x = upperlimit;
+        return x;
     }
 }
