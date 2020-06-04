@@ -21,7 +21,9 @@ import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +99,12 @@ public class Boostrap extends Application {
         }.start();
 
         stage.show();
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent t) {
+                System.exit(0);
+            }
+        });
     }
 
     private void createCombatEntity() {
