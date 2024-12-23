@@ -109,6 +109,11 @@ public class TestDamage {
                         TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
                         5,
                         TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
+                        0,
+                        0,
+                        5,
+                        TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
+                        0,
                         0
                 ),
                 new DodgeAttribute(

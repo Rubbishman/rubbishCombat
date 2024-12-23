@@ -15,6 +15,7 @@ import com.rubbishman.rubbishcombat.reducer.CombatReducer;
 import com.rubbishman.rubbishcombat.stages.ArmorStage;
 import com.rubbishman.rubbishcombat.stages.DirectDamageStage;
 import com.rubbishman.rubbishcombat.stages.DodgeStage;
+import com.rubbishman.rubbishcombat.ticksystem.ArmorFatigueRegenSystem;
 import com.rubbishman.rubbishcombat.ticksystem.ArmorRegenSystem;
 
 import java.util.concurrent.Executors;
@@ -86,6 +87,7 @@ public class RubbishCombat {
         }
 
         options.registerTickSystem(new ArmorRegenSystem());
+        options.registerTickSystem(new ArmorFatigueRegenSystem());
 
         options
                 .setReducer(new CombatReducer());

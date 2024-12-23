@@ -5,7 +5,7 @@ import com.rubbishman.rubbishcombat.state.CombatEntity;
 
 public class TempData {
     public TweenHelper curHealth, curArmour;
-    public long maxHealth, maxArmour, dodgeDamage, armorDamage;
+    public long maxHealth, maxArmour, dodgeDamage, armorDamage, armorFatigue;
 
     public TempData() {}
 
@@ -25,5 +25,6 @@ public class TempData {
         this.curArmour = new TweenHelper(combatEntity.defense.currentDefense, combatEntity.defense.currentDefense, 0, 40, 0.1);
         this.dodgeDamage = combatEntity.dodge.current;
         this.armorDamage = combatEntity.defense.defenseDamage;
+        this.armorFatigue = combatEntity.defense.defenseFatigue;
     }
 }

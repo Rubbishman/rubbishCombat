@@ -129,6 +129,12 @@ public class HealthBarPane {
 
                 healthBar.finalBorder(g2d);
 
+                g2d.fillText(
+                        tempData.armorFatigue+"",
+                        120,
+                        120
+                );
+
                 Iterator<ICombatTextRenderer> iter = combatTextRendererArrayList.iterator();
 
                 while(iter.hasNext()) {

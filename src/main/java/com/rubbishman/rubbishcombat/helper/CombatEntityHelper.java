@@ -16,7 +16,47 @@ public class CombatEntityHelper {
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor,
                         combatEntity.defense.damagePeriod,
-                        combatEntity.defense.defenseDamage + damageTaken),
+                        combatEntity.defense.defenseDamage + damageTaken,
+                        combatEntity.defense.defenseFatigue + (int)((float)damageTaken / ((float)combatEntity.defense.maxDefense / 4)),
+                        combatEntity.defense.defenseFatigueRegen,
+                        combatEntity.defense.defenseFatigueRegenPeriod,
+                        combatEntity.defense.regenRounding,
+                        combatEntity.defense.defenseFatigueRegenRounding
+                ),
+                combatEntity.dodge);
+    }
+
+    public static CombatEntity regenArmorFatigue(CombatEntity combatEntity, long elapsedTime) {
+        double regen = ((double)elapsedTime / combatEntity.defense.defenseFatigueRegenPeriod) * combatEntity.defense.defenseFatigueRegen;
+
+        int intRegen = (int)regen;
+        double remainder = regen - intRegen;
+
+        double newRemainder = combatEntity.defense.defenseFatigueRegenRounding + remainder;
+        int newRemainderRounded = (int)newRemainder;
+
+        if(newRemainderRounded > 0) {
+            newRemainder -= newRemainderRounded;
+            intRegen += newRemainderRounded;
+        }
+
+        return new CombatEntity(
+                combatEntity.currentHealth,
+                combatEntity.maxHealth,
+                new DefensiveAttribute(
+                        combatEntity.defense.currentDefense,
+                        combatEntity.defense.maxDefense,
+                        combatEntity.defense.defenseFactor,
+                        combatEntity.defense.regenPeriod,
+                        combatEntity.defense.regenFactor,
+                        combatEntity.defense.damagePeriod,
+                        combatEntity.defense.defenseDamage,
+                        Math.max(combatEntity.defense.defenseFatigue - intRegen, 0),
+                        combatEntity.defense.defenseFatigueRegen,
+                        combatEntity.defense.defenseFatigueRegenPeriod,
+                        combatEntity.defense.regenRounding,
+                        newRemainder
+                ),
                 combatEntity.dodge);
     }
 
@@ -42,10 +82,14 @@ public class CombatEntityHelper {
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor,
-                        newRemainder,
                         combatEntity.defense.damagePeriod,
-                        combatEntity.defense.defenseDamage
-                        ),
+                        combatEntity.defense.defenseDamage,
+                        combatEntity.defense.defenseFatigue,
+                        combatEntity.defense.defenseFatigueRegen,
+                        combatEntity.defense.defenseFatigueRegenPeriod,
+                        newRemainder,
+                        combatEntity.defense.defenseFatigueRegenRounding
+                ),
                 combatEntity.dodge);
     }
 
@@ -85,10 +129,14 @@ public class CombatEntityHelper {
                         combatEntity.defense.defenseFactor,
                         combatEntity.defense.regenPeriod,
                         combatEntity.defense.regenFactor,
-                        combatEntity.defense.regenRounding,
                         combatEntity.defense.damagePeriod,
-                        combatEntity.defense.defenseDamage - damageTaken
-                        ),
+                        combatEntity.defense.defenseDamage - damageTaken,
+                        combatEntity.defense.defenseFatigue,
+                        combatEntity.defense.defenseFatigueRegen,
+                        combatEntity.defense.defenseFatigueRegenPeriod,
+                        combatEntity.defense.regenRounding,
+                        combatEntity.defense.defenseFatigueRegenRounding
+                ),
                 combatEntity.dodge
         );
     }

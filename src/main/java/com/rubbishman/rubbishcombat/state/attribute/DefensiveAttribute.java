@@ -9,8 +9,12 @@ public class DefensiveAttribute {
     public final double regenRounding;
     public final long damagePeriod;
     public final long defenseDamage;
+    public final long defenseFatigue;
+    public final long defenseFatigueRegen;
+    public final long defenseFatigueRegenPeriod;
+    public final double defenseFatigueRegenRounding;
 
-    public DefensiveAttribute(long currentDefense, long maxDefense, long defenseFactor, long regenPeriod, long regenFactor, long damagePeriod, long defenseDamage) {
+    public DefensiveAttribute(long currentDefense, long maxDefense, long defenseFactor, long regenPeriod, long regenFactor, long damagePeriod, long defenseDamage, long defenseFatigue, long defenseFatigueRegen, long defenseFatigueRegenPeriod, double regenRounding, double defenseFatigueRegenRounding) {
         this.currentDefense = currentDefense;
         this.maxDefense = maxDefense;
         this.defenseFactor = defenseFactor;
@@ -18,17 +22,10 @@ public class DefensiveAttribute {
         this.regenFactor = regenFactor;
         this.damagePeriod = damagePeriod;
         this.defenseDamage = defenseDamage;
-        this.regenRounding = 0;
-    }
-
-    public DefensiveAttribute(long currentDefense, long maxDefense, long defenseFactor, long regenPeriod, long regenFactor, double regenRounding, long damagePeriod, long defenseDamage) {
-        this.currentDefense = currentDefense;
-        this.maxDefense = maxDefense;
-        this.defenseFactor = defenseFactor;
-        this.regenPeriod = regenPeriod;
-        this.regenFactor = regenFactor;
+        this.defenseFatigue = defenseFatigue;
+        this.defenseFatigueRegen = defenseFatigueRegen;
+        this.defenseFatigueRegenPeriod = defenseFatigueRegenPeriod;
         this.regenRounding = regenRounding;
-        this.damagePeriod = damagePeriod;
-        this.defenseDamage = defenseDamage;
+        this.defenseFatigueRegenRounding = defenseFatigueRegenRounding;
     }
 }

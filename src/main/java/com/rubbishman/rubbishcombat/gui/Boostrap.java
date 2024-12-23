@@ -18,7 +18,6 @@ import com.rubbishman.rubbishcombat.gui.data.TempData;
 import com.rubbishman.rubbishcombat.state.CombatEntity;
 import com.rubbishman.rubbishcombat.state.attribute.DefensiveAttribute;
 import com.rubbishman.rubbishcombat.state.attribute.DodgeAttribute;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -51,6 +50,7 @@ public class Boostrap extends Application {
                     tempData.curArmour.targetValue = combatEntity.defense.currentDefense;
                     tempData.dodgeDamage = combatEntity.dodge.current;
                     tempData.armorDamage = combatEntity.defense.defenseDamage;
+                    tempData.armorFatigue = combatEntity.defense.defenseFatigue;
                 }
             },
             new ActionTrackListener() {
@@ -133,7 +133,13 @@ public class Boostrap extends Application {
                     TimeUnit.NANOSECONDS.convert(1, TimeUnit.SECONDS),
                     15,
                     TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
-                    0),
+                    0,
+                    0,
+                    5,
+                    TimeUnit.NANOSECONDS.convert(500, TimeUnit.MILLISECONDS),
+                    0,
+                    0
+            ),
             new DodgeAttribute(
                     0,
                     8,

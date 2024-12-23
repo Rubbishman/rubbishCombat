@@ -55,6 +55,11 @@ public class CombatReducer extends IRubbishReducer {
             CombatEntity combatEntity = state.getObject(regen.target);
 
             state = state.setObject(regen.target, CombatEntityHelper.regenArmor(combatEntity, getElapsedTime()));
+        } else if(action instanceof ArmorFatigueRegen) {
+            ArmorFatigueRegen regen = (ArmorFatigueRegen)action;
+            CombatEntity combatEntity = state.getObject(regen.target);
+
+            state = state.setObject(regen.target, CombatEntityHelper.regenArmorFatigue(combatEntity, getElapsedTime()));
         } else if(action instanceof DodgeDamage) {
             DodgeDamage damage = (DodgeDamage)action;
             CombatEntity combatEntity = state.getObject(damage.target);
